@@ -20,7 +20,7 @@ Outputs (written into --outdir)
 
 Notes
 - Group letters in filenames (A–F) are preserved for traceability, but outputs also include
-  human-readable labels (EtOH_UV0, etc.).
+  interpretable labels (EtOH_UV0, etc.).
 - Seed controls bootstrap resampling only (reproducible CIs).
 """
 
