@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "Please cite this software when using its analyses."
+type: software
+title: "UVSM morphology and fluorescence analysis"
+authors:
+  - family-names: Ahn
+    given-names: Ezekiel
+version: 1.2.0
+repository-code: "https://github.com/EJSAHN/substrate-history-antifungal-photogating"
+license: MIT

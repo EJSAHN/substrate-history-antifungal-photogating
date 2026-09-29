@@ -1,0 +1,798 @@
+[
+  {
+    "name": "README",
+    "title": "README",
+    "description": "Read before interpreting the workbook. Blank cells in vehicle inhibition CI columns mean not applicable, not zero uncertainty.",
+    "headers": [
+      "Topic",
+      "Description"
+    ],
+    "static_rows": [
+      [
+        "Purpose",
+        "Current-run numerical results and source-data tables for the revised UVSM analysis."
+      ],
+      [
+        "Version",
+        "Software 1.2.0; numerical definitions retained from verified R1 analysis 1.0.0."
+      ],
+      [
+        "Phenotype scope",
+        "432 measurement rows, 48 factor combinations, 9 rows per combination. Source-row locators are not recovered biological plate IDs."
+      ],
+      [
+        "HSI scope",
+        "44 unique fluorescence pixel exports; A–D have 9 exports each, E–F have 4 each. Duplicate archive copies are not additional observations."
+      ],
+      [
+        "ROI terminology",
+        "Central (r/rmax ≤ 0.30) and peripheral (r/rmax ≥ 0.80) zones of the sampled colony ROI. Actual growth-front correspondence remains unconfirmed."
+      ],
+      [
+        "ROI source",
+        "All plots retain the supplied row/column coordinates. No circle fitting, warping, boundary tracing, filling, or new pixel extraction is used for display."
+      ],
+      [
+        "Biological provenance",
+        "Colony-derived pixels are reported by the authors; the precise selection rule and physical pixel scale require acquisition provenance."
+      ],
+      [
+        "Primary morphology inference",
+        "Reviewer-requested factorial raw-area model, HC3 covariance, sum-to-zero coding. UV dose is categorical."
+      ],
+      [
+        "Multiple testing",
+        "8 direct compound-versus-vehicle UV contrasts: Holm correction. Individual HC3 CIs are not simultaneous Holm-adjusted CIs."
+      ],
+      [
+        "HSI inference",
+        "Original maximum absolute mean-difference permutation result and studentized max-|t| sensitivity are reported together. The 717.9-nm band was selected on the same dataset."
+      ],
+      [
+        "CI scope",
+        "Pointwise percentile bootstrap intervals are not simultaneous intervals across all bands or across ROI cutoffs."
+      ],
+      [
+        "Historical discrepancy",
+        "Historical dose-table means reproduce, but some historical CI limits do not exactly reproduce. R1 follows the reproduced 5000/1337 convention; legacy limits are retained in provenance."
+      ],
+      [
+        "Independent replication",
+        "Existing fields do not identify independent runs, medium lots, compound lots, or operators. Analyses do not establish between-run reproducibility."
+      ],
+      [
+        "Blank codes",
+        "E/F designations follow the legacy codebook; composition/UV/acquisition metadata need confirmation. No global background-equivalence claim is made."
+      ],
+      [
+        "JMP",
+        "JMP clustering is a historical published/submitted-table transcription, not a rerun or Python approximation. Python PCA is separately named."
+      ],
+      [
+        "Workbook interpretation",
+        "Scientific model/bootstrap outputs are preserved fixed results. Table 1 inhibition and Table 2 mean differences are formulas with checks against frozen exports."
+      ],
+      [
+        "Source data",
+        "Exact CSV outputs and their hashes accompany this workbook in source_data/ and code/input_manifest.json."
+      ],
+      [
+        "Not performed",
+        "No new wet-lab experiment, no chemical recovery assay, no new isolate validation, no causal substrate/compound attribution, and no GitHub update."
+      ]
+    ]
+  },
+  {
+    "name": "CODEBOOK",
+    "title": "CODEBOOK",
+    "description": "Codes are retained for traceability. Historical labels are distinguished from independently checked acquisition metadata.",
+    "headers": [
+      "Group code",
+      "Treatment label",
+      "UV-C dose (mJ cm⁻²)",
+      "Isolate attribution",
+      "Time (h)",
+      "Label source",
+      "Export count",
+      "Qualification"
+    ],
+    "static_rows": [
+      [
+        "A",
+        "EtOH",
+        "0",
+        "P24-192",
+        "36",
+        "Submitted manuscript / legacy codebook",
+        "9",
+        "Acquisition/batch records not newly verified"
+      ],
+      [
+        "B",
+        "EtOH",
+        "70",
+        "P24-192",
+        "36",
+        "Submitted manuscript / legacy codebook",
+        "9",
+        "Acquisition/batch records not newly verified"
+      ],
+      [
+        "C",
+        "PhSOFA",
+        "0",
+        "P24-192",
+        "36",
+        "Submitted manuscript / legacy codebook",
+        "9",
+        "Acquisition/batch records not newly verified"
+      ],
+      [
+        "D",
+        "PhSOFA",
+        "70",
+        "P24-192",
+        "36",
+        "Submitted manuscript / legacy codebook",
+        "9",
+        "Acquisition/batch records not newly verified"
+      ],
+      [
+        "E",
+        "Legacy blank code E",
+        "Unconfirmed",
+        "Not applicable",
+        "Unconfirmed",
+        "Legacy codebook label: blank UV0",
+        "4",
+        "Composition and UV setting require confirmation"
+      ],
+      [
+        "F",
+        "Legacy blank code F",
+        "Unconfirmed",
+        "Not applicable",
+        "Unconfirmed",
+        "Legacy codebook label: blank UV70",
+        "4",
+        "Composition and UV setting require confirmation"
+      ]
+    ]
+  },
+  {
+    "name": "ANALYSIS_PARAMETERS",
+    "title": "ANALYSIS PARAMETERS",
+    "description": "Analysis settings are transcribed from the validated R1 code and results; no tuning has been performed during figure preparation.",
+    "headers": [
+      "Parameter",
+      "Value",
+      "Scope / note"
+    ],
+    "static_rows": [
+      [
+        "Morphology bootstrap resamples",
+        5000,
+        "Inherited mean/delta and matched-control bootstrap"
+      ],
+      [
+        "Morphology inherited seed",
+        1337,
+        "Cell means and within-treatment changes"
+      ],
+      [
+        "Matched-control streams",
+        "First 4 SHA-256 bytes of 'UVSM-R1-20260928|' + cell label, interpreted little-endian",
+        "Per-cell independent streams; exact results frozen"
+      ],
+      [
+        "HSI bootstrap resamples",
+        10000,
+        "Pointwise percentile intervals"
+      ],
+      [
+        "HSI bootstrap seed",
+        42,
+        "Same spectral-resampling scheme as validated R1"
+      ],
+      [
+        "HSI direct difference-of-contrasts seed",
+        20260928,
+        "Exploratory (D−C)−(B−A) bootstrap"
+      ],
+      [
+        "Core upper radial fraction",
+        0.3,
+        "Distance divided by max distance in exported ROI"
+      ],
+      [
+        "Peripheral lower radial fraction",
+        0.8,
+        "Distance divided by max distance in exported ROI"
+      ],
+      [
+        "Number of exported bands",
+        60,
+        "438.2–717.9 nm; spacing is not optical spectral resolution"
+      ],
+      [
+        "Target wavelength (nm)",
+        518.8,
+        "Original analysis target; prospectivity not newly certified"
+      ],
+      [
+        "Scan-selected wavelength (nm)",
+        717.9,
+        "Last exported band; selected in same dataset"
+      ],
+      [
+        "Exact label assignments per A/B or C/D comparison",
+        48620,
+        "All choices of 9 labels among 18 whole exports"
+      ],
+      [
+        "Dose levels (mJ cm⁻²)",
+        "0, 12, 35, 70",
+        "Categorical in factorial models"
+      ],
+      [
+        "Rows/cell",
+        9,
+        "48 morphology factor combinations"
+      ],
+      [
+        "Confidence level",
+        0.95,
+        "Individual/pointwise unless specified otherwise"
+      ]
+    ]
+  },
+  {
+    "name": "Morph_Observations",
+    "title": "Morph Observations",
+    "description": "Source measurement rows. Preserve row_identifier as a row locator only.",
+    "headers": [
+      "source_excel_row",
+      "row_identifier",
+      "Detailed treatment",
+      "Isolate",
+      "Chemical",
+      "UV",
+      "Area_mm2",
+      "Perimeter_mm",
+      "Length_mm",
+      "Width_mm",
+      "LWR",
+      "Circularity",
+      "IS_CG_mm"
+    ],
+    "csv": "phenotype_value_copy.csv"
+  },
+  {
+    "name": "Morph_48_Cells",
+    "title": "Morph 48 Cells",
+    "description": "Frozen R1 cell estimates and bootstrap CIs; control inhibition CI zeros are structural placeholders.",
+    "headers": [
+      "Isolate",
+      "Chemical",
+      "UV_mJ_cm2",
+      "n",
+      "mean_area_mm2",
+      "area_ci_low",
+      "area_ci_high",
+      "inhibition_percent",
+      "inhibition_ci_low",
+      "inhibition_ci_high",
+      "n_boot",
+      "inhibition_note"
+    ],
+    "csv": "Table1_48cells_matched_vehicle_inhibition.csv"
+  },
+  {
+    "name": "Morph_Direct_8",
+    "title": "Morph Direct 8",
+    "description": "Direct UV × compound contrasts versus matched vehicle; includes raw-area HC3, Holm p, and bootstrap sensitivity.",
+    "headers": [
+      "Isolate",
+      "Chemical",
+      "inhibition_UV0_pct",
+      "inhibition_UV70_pct",
+      "change_inhibition_percentage_points",
+      "change_ci_low",
+      "change_ci_high",
+      "area_difference_in_differences",
+      "did_boot_ci_low",
+      "did_boot_ci_high",
+      "model_effect",
+      "model_se",
+      "model_ci_low",
+      "model_ci_high",
+      "t_value",
+      "p_value",
+      "p_holm_8"
+    ],
+    "csv": "Morph_UV_by_compound_matched_control_8.csv"
+  },
+  {
+    "name": "Morph_Delta_12",
+    "title": "Morph Delta 12",
+    "description": "UV70−UV0 within each treatment, not the same estimand as direct treatment-by-UV interaction.",
+    "headers": [
+      "Isolate",
+      "Chemical",
+      "delta_70_minus_0",
+      "ci_low",
+      "ci_high",
+      "n0",
+      "n70",
+      "n_boot",
+      "seed",
+      "model_effect",
+      "model_se",
+      "model_ci_low",
+      "model_ci_high",
+      "t_value",
+      "p_value",
+      "p_holm_12"
+    ],
+    "csv": "Morph_delta_area_12_HC3_and_bootstrap.csv"
+  },
+  {
+    "name": "Morph_Circularity",
+    "title": "Morph Circularity",
+    "description": "Pointwise circularity differences and bootstrap CIs; unadjusted across the 12 combinations.",
+    "headers": [
+      "Isolate",
+      "Chemical",
+      "delta_circularity",
+      "ci_low",
+      "ci_high",
+      "n_boot",
+      "seed"
+    ],
+    "csv": "Morph_circularity_12.csv"
+  },
+  {
+    "name": "Morph_Levene",
+    "title": "Morph Levene",
+    "description": "Median-centred Levene tests; no equality proof from a non-significant result.",
+    "headers": [
+      "Isolate",
+      "Chemical",
+      "statistic",
+      "p_value",
+      "centre"
+    ],
+    "csv": "Morph_Levene_circularity.csv"
+  },
+  {
+    "name": "Factorial_Raw_HC3",
+    "title": "Factorial Raw HC3",
+    "description": "Reviewer-requested principal interaction analysis. HC3 and sum-to-zero coding. Stored p=0 denotes numerical underflow, not exact zero probability.",
+    "headers": [
+      "term",
+      "df_num",
+      "F",
+      "p_value",
+      "df_denom",
+      "covariance",
+      "coding"
+    ],
+    "csv": "factorial_Area_mm2_HC3_tests.csv"
+  },
+  {
+    "name": "Factorial_Raw_OLS",
+    "title": "Factorial Raw OLS",
+    "description": "Ordinary type-III sensitivity results, not substituted for HC3.",
+    "headers": [
+      "term",
+      "sum_sq",
+      "df",
+      "F",
+      "PR(>F)"
+    ],
+    "csv": "factorial_Area_mm2_ordinary_type3.csv"
+  },
+  {
+    "name": "Factorial_Log_HC3",
+    "title": "Factorial Log HC3",
+    "description": "Log-area HC3 sensitivity analysis, same observations and factor levels.",
+    "headers": [
+      "term",
+      "df_num",
+      "F",
+      "p_value",
+      "df_denom",
+      "covariance",
+      "coding"
+    ],
+    "csv": "factorial_log_Area_mm2_HC3_tests.csv"
+  },
+  {
+    "name": "Factorial_Log_OLS",
+    "title": "Factorial Log OLS",
+    "description": "Ordinary log-area type-III sensitivity results.",
+    "headers": [
+      "term",
+      "sum_sq",
+      "df",
+      "F",
+      "PR(>F)"
+    ],
+    "csv": "factorial_log_Area_mm2_ordinary_type3.csv"
+  },
+  {
+    "name": "PCA_Scores_Python",
+    "title": "PCA Scores Python",
+    "description": "Standardised seven-trait PCA. Sign convention is recorded; no JMP rerun claimed.",
+    "headers": [
+      "row_identifier",
+      "Isolate",
+      "Chemical",
+      "UV",
+      "PC1",
+      "PC2",
+      "PC3",
+      "PC4",
+      "PC5",
+      "PC6",
+      "PC7"
+    ],
+    "csv": "Morph_PCA_scores_Python.csv"
+  },
+  {
+    "name": "PCA_Variance",
+    "title": "PCA Variance",
+    "description": "Explained variance fractions and deterministic sign multipliers.",
+    "headers": [
+      "PC",
+      "variance_fraction",
+      "sign_multiplier"
+    ],
+    "csv": "Morph_PCA_explained_variance.csv"
+  },
+  {
+    "name": "PCA_Correlations",
+    "title": "PCA Correlations",
+    "description": "Correlations of original variables with PC scores, not eigenvector loadings.",
+    "headers": [
+      "feature",
+      "PC1_correlation",
+      "PC2_correlation",
+      "PC3_correlation",
+      "PC4_correlation",
+      "PC5_correlation",
+      "PC6_correlation",
+      "PC7_correlation"
+    ],
+    "csv": "Morph_PCA_variable_correlations.csv"
+  },
+  {
+    "name": "Morph_Correlations",
+    "title": "Morph Correlations",
+    "description": "Pearson correlation matrix of the seven original morphometric traits.",
+    "headers": [
+      "feature",
+      "Perimeter_mm",
+      "Area_mm2",
+      "Length_mm",
+      "Width_mm",
+      "Circularity",
+      "LWR",
+      "IS_CG_mm"
+    ],
+    "csv": "Morph_correlation_matrix.csv"
+  },
+  {
+    "name": "Archived_JMP_Clustering",
+    "title": "Archived JMP Clustering",
+    "description": "Archived JMP table values only. A low R² does not establish an independent causal driver.",
+    "headers": [
+      "Cluster",
+      "Variable",
+      "R-Square with Own Cluster",
+      "R-Square with Next Closest",
+      "1-R² Ratio"
+    ],
+    "csv": "Legacy_JMP_variable_clustering_NOT_recomputed.csv"
+  },
+  {
+    "name": "HSI_Target_PerPlate",
+    "title": "HSI Target PerPlate",
+    "description": "Both target-band ratios for all 44 exports. Central/peripheral refer to radial ROI zones.",
+    "headers": [
+      "plate",
+      "group_code",
+      "label_from_legacy_codebook",
+      "wavelength_nm",
+      "core_nfi",
+      "edge_nfi",
+      "ec_ratio",
+      "n_core",
+      "n_edge"
+    ],
+    "csv": "HSI_target_indices_per_plate.csv"
+  },
+  {
+    "name": "HSI_AllBands_PerPlate",
+    "title": "HSI AllBands PerPlate",
+    "description": "60 bands × 44 exports. Pixel normalisation precedes regional averaging; ratio is peripheral mean NFI / central mean NFI.",
+    "headers": [
+      "plate",
+      "group_code",
+      "wavelength_nm",
+      "ec_ratio",
+      "core_nfi",
+      "edge_nfi",
+      "whole_roi_nfi",
+      "core_mean_intensity_export_units",
+      "edge_mean_intensity_export_units"
+    ],
+    "csv": "HSI_all60bands_per_plate.csv"
+  },
+  {
+    "name": "HSI_Target_Effects",
+    "title": "HSI Target Effects",
+    "description": "Observed mean differences, CI and descriptive effect sizes; legacy bootstrap-distribution means retained separately.",
+    "headers": [
+      "condition_from_codebook",
+      "comparison",
+      "wavelength_nm",
+      "n0",
+      "n70",
+      "mean_UV0",
+      "mean_UV70",
+      "sd_UV0",
+      "sd_UV70",
+      "mean_difference_observed",
+      "ci_low",
+      "ci_high",
+      "relative_to_UV0_percent",
+      "hedges_g_descriptive",
+      "legacy_bootstrap_mean_10000",
+      "n_boot",
+      "seed",
+      "p_exact_max_abs_difference",
+      "p_exact_max_abs_t_sensitivity"
+    ],
+    "csv": "HSI_target_effect_sizes.csv"
+  },
+  {
+    "name": "HSI_Band_Tests",
+    "title": "HSI Band Tests",
+    "description": "Legacy Monte Carlo, exact max-absolute-difference, and studentized max-|t| sensitivity results; all retained.",
+    "headers": [
+      "comparison",
+      "condition_from_codebook",
+      "wavelength_nm",
+      "mean_difference_observed",
+      "ci_low",
+      "ci_high",
+      "legacy_mean_of_boot_differences_2000",
+      "legacy_mc_max_abs_diff_p",
+      "mean_difference",
+      "t_observed",
+      "p_raw_difference",
+      "p_max_abs_difference",
+      "p_studentized_t",
+      "p_max_abs_t",
+      "n0",
+      "n70",
+      "n_boot",
+      "seed",
+      "exact_assignments"
+    ],
+    "csv": "HSI_spectrum_legacy_and_exact_tests.csv"
+  },
+  {
+    "name": "HSI_Direct_Contrast",
+    "title": "HSI Direct Contrast",
+    "description": "(PhSOFA UV70−UV0) − (EtOH UV70−UV0); exploratory, unadjusted bootstrap CIs.",
+    "headers": [
+      "wavelength_nm",
+      "comparison",
+      "estimate",
+      "ci_low_unadjusted",
+      "ci_high_unadjusted",
+      "n_boot",
+      "seed",
+      "scope"
+    ],
+    "csv": "HSI_target_difference_of_contrasts.csv"
+  },
+  {
+    "name": "HSI_EF_Descriptive",
+    "title": "HSI EF Descriptive",
+    "description": "F−E by original group codes. Label/composition confirmation pending; no blanket absence-of-background-effects claim.",
+    "headers": [
+      "wavelength_nm",
+      "mean_difference_F_minus_E",
+      "ci_low",
+      "ci_high",
+      "n_E",
+      "n_F",
+      "note"
+    ],
+    "csv": "HSI_blank_codes_F_minus_E_DESCRIPTIVE_LABELS_REQUIRE_CONFIRMATION.csv"
+  },
+  {
+    "name": "HSI_ROI_Sensitivity",
+    "title": "HSI ROI Sensitivity",
+    "description": "121 cutoff pairs per band; same C/D observations reused. Pointwise CIs, not independent or multiplicity-adjusted validation.",
+    "headers": [
+      "wavelength_nm",
+      "core_fraction",
+      "edge_fraction",
+      "mean_difference",
+      "ci_low",
+      "ci_high",
+      "pointwise_ci_excludes_zero",
+      "legacy_2000_ci_low",
+      "legacy_2000_ci_high",
+      "legacy_pointwise_ci_excludes_zero",
+      "is_original_default",
+      "n_boot",
+      "seed"
+    ],
+    "csv": "HSI_ROI_sensitivity_grid_pointwise.csv"
+  },
+  {
+    "name": "HSI_Export_QC",
+    "title": "HSI Export QC",
+    "description": "Pixel counts, spectral endpoints, and input checksums. Intensities are supplied export units, not inferred calibration.",
+    "headers": [
+      "plate",
+      "group_code",
+      "n_roi_pixels",
+      "n_core",
+      "n_edge",
+      "n_middle",
+      "n_bands",
+      "wavelength_min_nm",
+      "wavelength_max_nm",
+      "min_raw_export",
+      "max_raw_export",
+      "source_sha256",
+      "note"
+    ],
+    "csv": "HSI_pixel_export_QC_44plates.csv"
+  },
+  {
+    "name": "Baseline_Checks",
+    "title": "Baseline Checks",
+    "description": "18 of 19 passed. The noncritical historical dose-CI discrepancy is retained and not hidden.",
+    "headers": [
+      "check",
+      "pass",
+      "critical",
+      "max_absolute_difference",
+      "tolerance"
+    ],
+    "csv": "baseline_checks.csv"
+  },
+  {
+    "name": "Historical_Dose_CI_Audit",
+    "title": "Historical Dose CI Audit",
+    "description": "Old CI limits and attempted historical replay. This is not the R1 effect table.",
+    "headers": [
+      "Strain",
+      "Chemical",
+      "UV",
+      "mean",
+      "lo",
+      "hi",
+      "replay_10000_seed42_ci_low",
+      "replay_10000_seed42_ci_high",
+      "low_difference",
+      "high_difference"
+    ],
+    "csv": "historical_dose_CI_unresolved_comparison.csv"
+  },
+  {
+    "name": "Author_Confirmation",
+    "title": "Author Confirmation",
+    "description": "Outstanding provenance/design questions, not fabricated method details.",
+    "headers": [
+      "code",
+      "detail"
+    ],
+    "csv": "unresolved_author_checks.csv"
+  },
+  {
+    "name": "Residuals_Raw",
+    "title": "Residuals Raw",
+    "description": "All source rows retained; residual size does not determine inclusion.",
+    "headers": [
+      "row_identifier",
+      "Isolate",
+      "Chemical",
+      "UV",
+      "fitted_area",
+      "residual",
+      "studentized_residual",
+      "cooks_distance"
+    ],
+    "csv": "Morph_model_residuals_all_rows.csv"
+  },
+  {
+    "name": "Table1_Efficacy",
+    "title": "Table1 Efficacy",
+    "description": "Area and inhibition intervals: pointwise percentile bootstrap. Inhibition = 100 × (1 − treatment mean / matched vehicle mean). Vehicle CI cells are blank because reference inhibition is 0 by definition, not a precision estimate.",
+    "headers": [
+      "Isolate",
+      "Treatment",
+      "UV-C dose (mJ cm⁻²)",
+      "n rows",
+      "Mean area (mm²)",
+      "Area CI lower",
+      "Area CI upper",
+      "Matched vehicle mean (mm²)",
+      "Inhibition (%)",
+      "Inhibition CI lower",
+      "Inhibition CI upper"
+    ],
+    "derived": "Table1_Efficacy"
+  },
+  {
+    "name": "Table2_HSI",
+    "title": "Table2 HSI",
+    "description": "E/C denotes peripheral/central mean NFI within sampled ROI. Same-data band selection and method-sensitive inference must be stated; no fluorophore assignment or universal biomarker claim.",
+    "headers": [
+      "Condition",
+      "Wavelength (nm)",
+      "n UV0",
+      "n UV70",
+      "Mean E/C UV0",
+      "Mean E/C UV70",
+      "Observed ΔE/C",
+      "Pointwise CI lower",
+      "Pointwise CI upper",
+      "p exact unadjusted difference",
+      "p exact max difference",
+      "p exact max |t| sensitivity",
+      "p legacy MC max difference",
+      "Band status"
+    ],
+    "derived": "Table2_HSI"
+  },
+  {
+    "name": "NFI_Map_Source",
+    "title": "NFI Map Source",
+    "description": "Original exported coordinates are unchanged. Example exports are the lowest-numbered C and D files, not selected by effect magnitude; colour limits are shared within a wavelength.",
+    "headers": [
+      "Export ID",
+      "Row",
+      "Column",
+      "Normalised radial distance",
+      "Radial zone",
+      "NFI 518.8 nm",
+      "NFI 717.9 nm"
+    ],
+    "derived": "NFI_Map_Source"
+  },
+  {
+    "name": "Workbook_Checks",
+    "title": "Workbook Checks",
+    "description": "Independent display-formula check against frozen analysis values. Expected absolute differences below 1e-9. No statistical method is changed here.",
+    "headers": [
+      "Check",
+      "Frozen value",
+      "Formula value",
+      "Absolute difference"
+    ],
+    "derived": "Workbook_Checks"
+  },
+  {
+    "name": "INDEX",
+    "title": "INDEX",
+    "description": "All source CSVs are supplied alongside the workbook. Main tables are at Table1_Efficacy and Table2_HSI.",
+    "headers": [
+      "Sheet",
+      "Data rows",
+      "Columns",
+      "Category",
+      "Contents / caveat",
+      "Source file"
+    ],
+    "derived": "INDEX"
+  }
+]
