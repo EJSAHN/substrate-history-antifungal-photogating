@@ -47,7 +47,7 @@ def run(input_dir: Path, outdir: Path, baseline_dir: Path | None = None,
         pix,waves,per,spec=a.hsi_inputs(src)
         a.log('Observed differences; historical and exact maximum-statistic tests')
         a.hsi_contrasts(pix,waves)
-        a.log('Pointwise radial-threshold sensitivity; no independent validation claim')
+        a.log('Radial-threshold sensitivity with pointwise intervals')
         a.hsi_sensitivity(pix,waves,src)
         a.table('baseline_checks.csv',a.AUDIT,'audit')
         a.table('unresolved_author_checks.csv',a.ISSUES,'audit')
@@ -65,7 +65,7 @@ def run(input_dir: Path, outdir: Path, baseline_dir: Path | None = None,
         a.table('NFI_Map_Source.csv',maps)
         if workbook:
             from .workbook import build_workbook
-            a.log('Export analysis workbook from this run, not a precomputed snapshot')
+            a.log('Export current analysis tables to Supplementary Data 1')
             build_workbook(out,out/'Supplementary_Data_1_R1.xlsx')
         src.verify_unchanged()
         summary.update(status=('COMPLETED_WITH_BASELINE_WARNINGS' if any(not r['pass'] for r in a.AUDIT)
