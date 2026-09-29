@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""UVSM R1 computational revision, v1.0.0.
-
-Numerical operations retained from the locally verified R1 analysis.
-The public entry point accepts a conventional input directory. Presentation,
-private recovery paths, and submission documents are not part of this module.
-"""
+"""Numerical routines for UVSM morphology and fluorescence analyses."""
 from __future__ import annotations
 import argparse, collections, csv, datetime as dt, hashlib, itertools, json
 import math, os, platform, re, sys, time, traceback, zipfile
@@ -137,7 +132,7 @@ def load_pheno(src):
         raise ValueError('Exact duplicate measurement rows; inspect before analysis')
     table('phenotype_value_copy.csv',d,'inputs_snapshot')
     table('cell_counts.csv',n.rename('n').reset_index(),'audit')
-    issue('RUN_METADATA_NOT_ENCODED','The 432 rows have no experiment/run, batch, lot, plate-ID, inoculation-date, or operator fields. row_identifier is a source-row locator, NOT a recovered biological plate identifier. Models below assume row-level independence and do not establish between-run replication. Author confirmation is required.')
+    issue('RUN_METADATA_NOT_ENCODED','The 432 morphology rows do not include experiment/run, batch, lot, biological plate ID, inoculation date or operator fields. row_identifier locates a source record. Models assume row-level independence; between-run replication cannot be assessed from these fields.')
     return d
 
 def cell_arrays(d,col='Area_mm2'):
@@ -175,7 +170,7 @@ def boot_interleaved(x,y,b=NB_HSI,seed=SEED_HSI,rng=None,high_first=False):
 def reconcile_morph(d):
     a=cell_arrays(d); circ=cell_arrays(d,'Circularity')
     if REFERENCE_DIR is None:
-        issue('BASELINE_NOT_SUPPLIED','Historical numerical comparisons were not run; no reproduction claim is made by this run.')
+        issue('BASELINE_NOT_SUPPLIED','Historical reference tables were not supplied, so numerical comparisons with them were not performed.')
         return a,circ
     sub=load_reference('submitted_Morph_DoseResponse.csv')
     mean_actual=np.array([a[(r.Strain,r.Chemical,int(r.UV_Dose_mJ_cm2))].mean() for r in sub.itertuples()])
@@ -207,14 +202,14 @@ def reconcile_morph(d):
     table('historical_dose_CI_unresolved_comparison.csv',auditdose,'audit')
     check('48 historical Word/figure dose means vs source', [a[(r.Strain,r.Chemical,int(r.UV))].mean() for r in histdose.itertuples()],histdose['mean'])
     if not ok_old_dose:
-        issue('HISTORICAL_DOSE_CI_NOT_EXACTLY_REPRODUCED','All 48 historical dose means match the raw rows, but the preserved historical dose-table CI limits are not exactly reproduced by the captured notebook helper at 10000 resamples/seed 42. The precise prior settings/order/source of those CI limits are unresolved. Old limits are retained unchanged in the audit; R1 uses the fully reproduced submitted-workbook 5000/1337 convention. This is a reported baseline discrepancy, not a tolerance adjustment or silent repair.')
+        issue('HISTORICAL_DOSE_CI_NOT_EXACTLY_REPRODUCED','All 48 historical dose means agree with the source measurements. Some archived dose-table confidence limits differ from the 10000-resample, seed-42 replay; their original settings or ordering remain unresolved. Archived limits are retained in the comparison output. The current summaries use the reproduced 5000-resample, seed-1337 convention.')
     cr=load_reference('submitted_Morph_CircDelta_Summary.csv')
     cv=[]
     for r in cr.itertuples():
         v,ci,_=boot_delta_legacy(circ[(r.Strain,r.Chemical,0)],circ[(r.Strain,r.Chemical,70)])
         cv.append([v,*ci])
     check('5000/1337 circularity vs submitted workbook',cv,cr[['DeltaCircularity_70_minus_0','Lower_95_CI','Upper_95_CI']])
-    issue('LEGACY_MORPH_CI_SETTINGS','The historical delta-area figure table is reproduced with 10000/42 sequential draws; the submitted Python workbook is reproduced with 5000/1337. The historical dose-table CI discrepancy is recorded separately rather than assumed to share the same recovered settings. Revised morphology tables consistently use 5000/1337 for inherited summaries. Raw means are not changed. New matched-control contrast resampling uses separately documented streams.')
+    issue('LEGACY_MORPH_CI_SETTINGS','The historical delta-area figure uses 10000 resamples, seed 42 and sequential draws; the submitted workbook uses 5000 resamples and seed 1337. The historical dose-table CI discrepancy is recorded separately. Current mean/delta summaries use 5000/1337, while matched-control quantities use the documented per-cell streams.')
     table('legacy_delta_area_replay.csv',[{'Isolate':s,'Chemical':c,'mean_difference':v[0],'ci_low':v[1],'ci_high':v[2],'n_boot':10000,'seed':42,'draw_order':'one RNG over P24-192, CGH17, CGH5, CGH49 and Control, PhSOAM, PhSOFA; high then low'} for (s,c),v in replay.items()],'audit')
     return a,circ
 
@@ -298,7 +293,7 @@ def morphology(d,a,circ):
     inf=model.get_influence(); res['studentized_residual']=inf.resid_studentized_internal
     res['cooks_distance']=inf.cooks_distance[0]
     table('Morph_model_residuals_all_rows.csv',res)
-    issue('MODEL_SCOPE','Factorial HC3 tests, matched-control contrasts, and log-area sensitivity analyses are reviewer-requested additions, not prospectively preregistered tests. UV is categorical. No row is removed by residual size or significance. These tests cannot repair absent experiment-level replication or identify photochemical mechanism.')
+    issue('MODEL_SCOPE','Factorial HC3 tests, matched-control contrasts and log-area sensitivity analyses were added during revision. UV is categorical, and all source rows are retained regardless of residual size. These analyses do not establish experiment-level reproducibility or identify the photochemical mechanism.')
     return main,delt,intr,res
 
 def pca_analysis(d):
@@ -335,7 +330,7 @@ def pca_analysis(d):
                 err=float(np.max(np.abs(scores[:,j]*sign-prev[f'PC{j+1}'].to_numpy())))
                 comp.append({'component':f'PC{j+1}','correlation_up_to_sign':abs(r),'comparison_sign':sign,'max_abs_difference':err})
                 check(f'PCA PC{j+1} vs submitted coordinates (sign only)',scores[:,j]*sign,prev[f'PC{j+1}'],tol=1e-7)
-        else: issue('PCA_ROW_MATCH','Submitted PCA scores could not be row-aligned by condition labels; no coordinate comparison claimed.')
+        else: issue('PCA_ROW_MATCH','The historical PCA scores could not be aligned to the current rows by condition labels, so coordinate comparison was omitted.')
         table('PCA_legacy_coordinate_comparison.csv',comp,'audit')
     corr=pd.DataFrame(np.corrcoef(d[MORPH].to_numpy(float),rowvar=False),index=MORPH,columns=MORPH).reset_index(names='feature')
     table('Morph_correlation_matrix.csv',corr)
@@ -343,7 +338,7 @@ def pca_analysis(d):
     jmp_path=(REFERENCE_DIR/'legacy_JMP_variable_clustering.csv') if REFERENCE_DIR is not None else INPUT_DIR/'archived_jmp_variable_clustering.csv'
     jmp=pd.read_csv(jmp_path) if jmp_path.is_file() else pd.DataFrame(columns=['Cluster','Variable','R-Square with Own Cluster','R-Square with Next Closest','1-R² Ratio'])
     table('Legacy_JMP_variable_clustering_NOT_recomputed.csv',jmp,'legacy_reference')
-    issue('JMP_PROVENANCE','PCA is regenerated from seven morphometrics in Python and compared to preserved scores. The historical JMP variable-clustering table is copied/visualised only. No approximate Python varclus is substituted. Low R-square alone does not prove an independent causal driver.')
+    issue('JMP_PROVENANCE','PCA is calculated from seven morphometrics in Python; comparisons with preserved scores are made when reference tables are supplied. The archived JMP variable-clustering summary is included without recalculation. Low R-square alone does not establish a causal role.')
     return sc,ld,corr,fit.explained_variance_ratio_,jmp
 
 def hsi_inputs(src):
@@ -396,8 +391,8 @@ def hsi_inputs(src):
         oldscan=load_reference('submitted_HSI_Fscan_PerPlate.csv').sort_values(['plate','wl'])
         newscan=spec.sort_values(['plate','wavelength_nm'])
         check('2640 plate-band EC values vs submitted workbook',newscan.ec_ratio,oldscan.ec_ratio)
-    issue('HSI_METADATA','A-D treatment labels and P24-192/36 h attribution are inherited from the submitted manuscript/codebook, not newly verified acquisition records. Confirm E/F blank composition and UV labels, instrument settings/calibration, and any acquisition runs. Archives 01202026 and 01212026 separate A/B/E from C/D/F; filenames alone do not establish dates or independent runs.')
-    issue('NO_ADDITIONAL_HSI_ISOLATES','Only 44 unique fluorescence pixel files with A-F codes were captured. Copies in folders/ZIPs are not independent validation. This recovery does not provide another isolate or a new experiment. No physical pixel scale or detector spectral resolution is inferred from column spacing.')
+    issue('HSI_METADATA','A–D labels and the P24-192/36 h attribution follow the manuscript and codebook. Circular colony ROIs were selected to approximate the outlines; irregular marginal extensions could be excluded. Central and peripheral zones are computed from exported coordinates. E/F composition and UV labels, physical pixel dimensions, instrument calibration and acquisition-run metadata require documentation. The 01202026 and 01212026 archives contain A/B/E and C/D/F, respectively; archive names alone do not establish experimental dates or independent runs.')
+    issue('NO_ADDITIONAL_HSI_ISOLATES','The supplied fluorescence inputs contain 44 unique A–F exports. Duplicate copies are counted once. These inputs do not provide independent isolate validation. Physical pixel dimensions and detector spectral resolution are not determined from wavelength-column spacing.')
     return pix,ref_waves,per,spec
 
 def legacy_maxdiff_mc(x,y,seed):
@@ -502,9 +497,9 @@ def hsi_contrasts(pix,waves):
     spectral=table('HSI_spectrum_legacy_and_exact_tests.csv',allspec)
     table('HSI_target_difference_of_contrasts.csv',interactions)
     table('HSI_permutation_comparison.csv',legacyrows,'audit')
-    issue('HSI_POINT_ESTIMATOR','Old bootstrap helper returned the mean of resampled mean differences rather than the direct observed group-mean difference. Legacy values are reproduced in audit columns. R1 reports the observed difference; bootstrap is used only for its CI. Both versions are preserved, not silently replaced.')
-    issue('MAX_T_TERMINOLOGY','The old permutation_maxT_pvalues function uses max(abs(group mean difference)), not a studentised t statistic. This can be a valid max-statistic permutation test under exchangeability, but its statistic must be named correctly. R1 repeats the old Monte Carlo procedure, enumerates all 48620 whole-plate assignments, and reports studentised max-|t| separately as sensitivity. It does NOT select the more significant method.')
-    issue('HSI_SELECTED_BAND','717.9 nm was selected on the same 60-band dataset and is the highest exported wavelength. Its bootstrap CI is not a selection-adjusted CI. No fluorophore, biochemical mechanism, independent prediction, or superiority over same-time morphometry is inferred. 518.8 nm is called the original target, not newly certified as prospectively prespecified.')
+    issue('HSI_POINT_ESTIMATOR','Current point estimates are observed differences between group means. The historical helper instead reported the average of bootstrap mean differences; those estimates remain in comparison columns. Bootstrap samples provide the current confidence intervals.')
+    issue('MAX_T_TERMINOLOGY','The historical permutation statistic is the maximum absolute group-mean difference, without studentization. The analysis reports the original Monte Carlo procedure, exact enumeration of 48620 whole-export label assignments and a separate studentized maximum-|t| sensitivity test. Permutation inference assumes label exchangeability.')
+    issue('HSI_SELECTED_BAND','717.9 nm was selected from the same 60-band dataset and is its highest exported wavelength. Its pointwise bootstrap CI is not adjusted for selection. No biochemical assignment, independent prediction or advantage over same-time morphometry has been established. 518.8 nm is the target retained from the original analysis.')
     return xs,targetdf,spectral,pd.DataFrame(interactions)
 
 def grid_for_pixel(p,waves):
@@ -541,11 +536,11 @@ def hsi_sensitivity(pix,waves,src):
                              'legacy_pointwise_ci_excludes_zero':bool(ci[0,a,b]>0 or ci[1,a,b]<0),
                              'is_original_default':bool(cf==.3 and ef==.8),'n_boot':NB_HSI,'seed':42})
     frame=table('HSI_ROI_sensitivity_grid_pointwise.csv',rows)
-    issue('GRID_NOT_INDEPENDENT_VALIDATION','The 121 ROI combinations reuse the same C/D plates. Their CIs are pointwise and not multiplicity-adjusted over the ROI grid. Stability over thresholds is a sensitivity analysis, not independent validation, proof of biological origin, or run-to-run reproducibility.')
+    issue('GRID_NOT_INDEPENDENT_VALIDATION','The 121 radial-cutoff combinations reuse the same C/D observations. Their confidence intervals are pointwise and not adjusted across the cutoff grid. This evaluates parameter sensitivity, not independent validation or between-run reproducibility.')
     return frame
 
 def log_model_diagnostics(d):
-    """Exact display-data calculation used by the validated figure builder."""
+    """Calculate log-area residuals for diagnostic plots."""
     groups={}
     for r in d.to_dict('records'):
         k=(r['Isolate'],r['Chemical'],str(r['UV']))
