@@ -1,0 +1,124 @@
+{
+  "package": "UVSM analysis code",
+  "version": "1.2.0",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 212,
+      "sha256": "71ed611b5a8edaf8e1f25439e38de09e3c79aa773f2d11031eb60c85520093e6"
+    },
+    {
+      "path": "CITATION.cff",
+      "bytes": 317,
+      "sha256": "4b1ba0c4affef027e889313ca752fd17928be224f92f493ba625124f2b15b166"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1056,
+      "sha256": "1126322e2cc8d165adc4c792eeb195717de2bcc7b39be1ce77959d78e87ef685"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4236,
+      "sha256": "145811335928d9e582ea2155237c0cd9662c1bdf41ff7df4889636e754b5266f"
+    },
+    {
+      "path": "docs/INPUTS.md",
+      "bytes": 2428,
+      "sha256": "40b42a95e80e29cefff7c17ff42562bc9e22a3774b07ebcd27d612fc39f11d1c"
+    },
+    {
+      "path": "docs/METHODS.md",
+      "bytes": 4690,
+      "sha256": "78671367d7e57a9ed63298f90f9ffbb80b86b73b5791d6b4d5a0789b3494fbb0"
+    },
+    {
+      "path": "docs/MIGRATION.md",
+      "bytes": 1060,
+      "sha256": "06ca5c5fd6868e75c78698de4a65746b0b0a8258d84bb4a2a4e5c0b28043ccb6"
+    },
+    {
+      "path": "input/README.md",
+      "bytes": 121,
+      "sha256": "d3fd907a0e29cc4216c87261a489c88e1da4edb872f8c40b9a74d5720105c3c7"
+    },
+    {
+      "path": "out/README.md",
+      "bytes": 72,
+      "sha256": "6f2632333479738e7bab41618a9d65d97f6e3c9f17dc9a39496e8f5bb09a9c90"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 655,
+      "sha256": "6ef8a4de6714dde2d5ea3d54d603c90d695e16df59e35baec8d572a3279ce494"
+    },
+    {
+      "path": "requirements.txt",
+      "bytes": 97,
+      "sha256": "ed399cbd1f6d82208ea3e813c2fa0c291d7e5f5d05461fc3e19a7fbfb55c4d61"
+    },
+    {
+      "path": "scripts/compare_results.py",
+      "bytes": 2524,
+      "sha256": "6fe0ead36f883b9506f22d80d1890304f0472b02756a5f14f425bbd8c5663291"
+    },
+    {
+      "path": "scripts/export_supplementary_data.py",
+      "bytes": 507,
+      "sha256": "0f53b729135e7718b52c0514df0de0a557fac57b31df3def11def46d85e3bcad"
+    },
+    {
+      "path": "scripts/run_analysis.py",
+      "bytes": 270,
+      "sha256": "d0301a28a56a83ec08b4d20b9601e76993c9ea29c5654f8f4dc650b775105c85"
+    },
+    {
+      "path": "src/uvsm/__init__.py",
+      "bytes": 72,
+      "sha256": "be3f5cc2e90074f5879ad0ce39eb128dcd6efc75f6c87e845d068a2436e78ec7"
+    },
+    {
+      "path": "src/uvsm/analysis.py",
+      "bytes": 39428,
+      "sha256": "428b4404571f7b0e64afec2657c711a283203e0cc59e7c3d2b1080e64a74e365"
+    },
+    {
+      "path": "src/uvsm/inputs.py",
+      "bytes": 4847,
+      "sha256": "b2aeea3200590e8aeeb242a360b8e9f545939342ed447a46664b3e7ba70eb350"
+    },
+    {
+      "path": "src/uvsm/pipeline.py",
+      "bytes": 5656,
+      "sha256": "ea29293e7b65793cc8490f72932b06bc7f30aa9a55551da343e05903f1faafe7"
+    },
+    {
+      "path": "src/uvsm/schema/workbook_layout.json",
+      "bytes": 22696,
+      "sha256": "ba7c65e3bb33675ff75afa0d7af89c13fbfb5cd6ff47ff310dba35518369764a"
+    },
+    {
+      "path": "src/uvsm/workbook.py",
+      "bytes": 12070,
+      "sha256": "501e8dd25b31afbffc9f5f9e80212aa46a052ad6488a66bf625a7a052ca7f7f9"
+    },
+    {
+      "path": "tests/test_inputs.py",
+      "bytes": 2877,
+      "sha256": "9540782aa8c974c67629cd5cc97848b2ed40e694374362eb05399c89c83dc67a"
+    },
+    {
+      "path": "tests/test_math.py",
+      "bytes": 2809,
+      "sha256": "c610e51b443c5919d59e4efdb081c3fe07fada181f5b8e0dd36ae502b0ded7f1"
+    },
+    {
+      "path": "tests/test_workbook.py",
+      "bytes": 1073,
+      "sha256": "04706ae25629588f583563decb05f72c33282ff7f89c54a716fb8d06fb5bb315"
+    }
+  ],
+  "manifest_excludes_itself": true,
+  "maintenance_patch": "log-finalize-1",
+  "documentation_revision": "2026-09-29"
+}
