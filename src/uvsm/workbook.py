@@ -1,7 +1,7 @@
-"""Export current-run CSV results; never substitute an old numerical snapshot.
+"""Export analysis CSVs to the Supplementary Data 1 workbook.
 
-The Windows writer uses the existing openpyxl dependency. Inference is computed
-in analysis.py, not in Excel. Only simple, checked display formulas are cached.
+Inferential statistics are computed in analysis.py. Display formulas are checked
+against those results before their cached values are written.
 """
 from __future__ import annotations
 import argparse
@@ -59,11 +59,6 @@ def make_snapshot(root: Path):
         if 'csv' in item:add(item,source_csv(root,item['csv'],item['headers']))
         elif 'static_rows' in item:
             rows=[list(x) for x in item['static_rows']]
-            if item['name']=='README':
-                for r in rows:
-                    if r[0]=='Version':r[1]='Analysis package 1.2.0; numerical definitions retained from validated R1 1.0.0. This workbook is regenerated from current-run outputs.'
-                    if r[0]=='Purpose':r[1]='Current-run R1 analysis results and source-data tables, not new experimental observations.'
-                    if r[0]=='Biological provenance':r[1]='Colony-derived pixels are reported by the authors. Boundary-selection rule and physical pixel scale remain acquisition-provenance checks.'
             add(item,rows)
         elif item['name']=='Table1_Efficacy':
             raw=lookup['Morph_48_Cells']['values'][4:];h=lookup['Morph_48_Cells']['values'][3]
