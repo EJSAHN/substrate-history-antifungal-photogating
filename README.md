@@ -1,9 +1,6 @@
 # UVSM analysis
 
-Reproducible morphology and fluorescence analyses for UV-C assay-history effects
-in fungal bioassays. Release **1.2.0** separates numerical analysis from private
-recovery tools and figure preparation. It retains the numerical definitions
-validated in R1 analysis 1.0.0.
+This repository provides code for analysing colony morphology and spatial fluorescence in UV-C-treated fungal bioassays. Version 1.2.0 generates analysis tables and the Supplementary Data 1 workbook. Figure preparation is maintained separately.
 
 ## Run
 
