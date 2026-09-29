@@ -1,9 +1,1 @@
-# Input data
-
-Place your input files here (not committed).
-
-Expected by default scripts:
-- `phenotype.xlsx`
-- `hsi.zip`
-
-You can override paths via CLI flags.
+Supply phenotype.xlsx and fluorescence/ or HSI.zip as described in docs/INPUTS.md. No observations are distributed here.
