@@ -1,0 +1,133 @@
+{
+  "package": "UVSM analysis code",
+  "version": "1.2.1",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 212,
+      "sha256": "71ed611b5a8edaf8e1f25439e38de09e3c79aa773f2d11031eb60c85520093e6"
+    },
+    {
+      "path": "CITATION.cff",
+      "bytes": 317,
+      "sha256": "6f6ada470c93ceb5e390c9e77e737c112731d1b77c759b72f8c5ad73ae169c10"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1056,
+      "sha256": "1126322e2cc8d165adc4c792eeb195717de2bcc7b39be1ce77959d78e87ef685"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4561,
+      "sha256": "7083fbfa839fe992a5b6533db84330d0987a83055896ea2a2c7572a846b7fb1a"
+    },
+    {
+      "path": "docs/INPUTS.md",
+      "bytes": 2612,
+      "sha256": "a3099b3a7a003db8b74c2c84e853181908f3e544bb650f4834530a04120176ac"
+    },
+    {
+      "path": "docs/METHODS.md",
+      "bytes": 7102,
+      "sha256": "3e489d7006147770f66617a270cdfdd954f8a5a2c8b77e269edcf967208d9e02"
+    },
+    {
+      "path": "docs/MIGRATION.md",
+      "bytes": 1524,
+      "sha256": "231434954280402be4fe3f177fe477a7ad557a890056ddca978bef52c3acd565"
+    },
+    {
+      "path": "input/README.md",
+      "bytes": 121,
+      "sha256": "d3fd907a0e29cc4216c87261a489c88e1da4edb872f8c40b9a74d5720105c3c7"
+    },
+    {
+      "path": "out/README.md",
+      "bytes": 72,
+      "sha256": "6f2632333479738e7bab41618a9d65d97f6e3c9f17dc9a39496e8f5bb09a9c90"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 655,
+      "sha256": "3a71d5eb4e609e599af8ba8e7e2204c2092415dd79dadc40342d8d78567d37ca"
+    },
+    {
+      "path": "requirements.txt",
+      "bytes": 97,
+      "sha256": "ed399cbd1f6d82208ea3e813c2fa0c291d7e5f5d05461fc3e19a7fbfb55c4d61"
+    },
+    {
+      "path": "scripts/compare_results.py",
+      "bytes": 2524,
+      "sha256": "6fe0ead36f883b9506f22d80d1890304f0472b02756a5f14f425bbd8c5663291"
+    },
+    {
+      "path": "scripts/export_supplementary_data.py",
+      "bytes": 507,
+      "sha256": "0f53b729135e7718b52c0514df0de0a557fac57b31df3def11def46d85e3bcad"
+    },
+    {
+      "path": "scripts/run_analysis.py",
+      "bytes": 270,
+      "sha256": "d0301a28a56a83ec08b4d20b9601e76993c9ea29c5654f8f4dc650b775105c85"
+    },
+    {
+      "path": "src/uvsm/__init__.py",
+      "bytes": 72,
+      "sha256": "23891f8af11f6369a0b7c4d514dd925306ec2c5db574c0b24701a7d28982f788"
+    },
+    {
+      "path": "src/uvsm/analysis.py",
+      "bytes": 39457,
+      "sha256": "7f746474b9b4de33cdaeafcec37004962c5b6ae5e29c28967540449961b2cad5"
+    },
+    {
+      "path": "src/uvsm/components.py",
+      "bytes": 12951,
+      "sha256": "4268e569586083219ef87f36f87bfa56529015aa6152340fa95afb9b55e1fd2e"
+    },
+    {
+      "path": "src/uvsm/inputs.py",
+      "bytes": 4847,
+      "sha256": "b2aeea3200590e8aeeb242a360b8e9f545939342ed447a46664b3e7ba70eb350"
+    },
+    {
+      "path": "src/uvsm/pipeline.py",
+      "bytes": 5835,
+      "sha256": "3b8fd23e91d0105048cc221fafe29b49793fc3a22f4d3eb6aea63582109bec54"
+    },
+    {
+      "path": "src/uvsm/schema/workbook_layout.json",
+      "bytes": 26316,
+      "sha256": "2fcd6b49f6598c214cb034332869233ed6673b1eca393750835516b6cb8d6b4e"
+    },
+    {
+      "path": "src/uvsm/workbook.py",
+      "bytes": 12070,
+      "sha256": "da5e8347419e04aaae2335e8f942f097c1cf11dde2459bda3715bb0653be8388"
+    },
+    {
+      "path": "tests/test_components.py",
+      "bytes": 3622,
+      "sha256": "ba614ed1b9637ec3abf3e3c403f93504bc78a6babb1dcd55838016a0f37f2034"
+    },
+    {
+      "path": "tests/test_inputs.py",
+      "bytes": 2877,
+      "sha256": "9540782aa8c974c67629cd5cc97848b2ed40e694374362eb05399c89c83dc67a"
+    },
+    {
+      "path": "tests/test_math.py",
+      "bytes": 2809,
+      "sha256": "c610e51b443c5919d59e4efdb081c3fe07fada181f5b8e0dd36ae502b0ded7f1"
+    },
+    {
+      "path": "tests/test_workbook.py",
+      "bytes": 1073,
+      "sha256": "04706ae25629588f583563decb05f72c33282ff7f89c54a716fb8d06fb5bb315"
+    }
+  ],
+  "manifest_excludes_itself": true,
+  "base_commit": "67b022650c33b9851af0e6c2c61be3697a499956"
+}
