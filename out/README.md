@@ -1,3 +1,1 @@
-# Outputs
-
-This folder is created/filled by the pipeline. It is gitignored.
+Generated outputs are ignored by Git. Use a new or empty run directory.
