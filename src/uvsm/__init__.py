@@ -1,1 +1,2 @@
-__all__ = []
+"""UVSM analysis-only reproducibility package."""
+__version__ = '1.2.0'
